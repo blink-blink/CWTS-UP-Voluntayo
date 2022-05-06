@@ -1,39 +1,79 @@
 package com.example.upvoluntaryo;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-
-import com.example.upvoluntaryo.ui.main.SectionsPagerAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView register;
+    EditText username, password, rePassword;
+    Button btnRegister,btnExistingUser;
+    DBHelper DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        setContentView(R.layout.activity_register);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        //assign view to vars
+        register = (TextView) findViewById(R.id.register);
+        username = (EditText) findViewById(R.id.usernameR);
+        password = (EditText) findViewById(R.id.passwordR);
+        rePassword = (EditText) findViewById(R.id.retypePasswordR);
+        btnRegister = (Button) findViewById(R.id.registerButton);
+        btnExistingUser = (Button) findViewById(R.id.existingUserButton);
+
+        DB = new DBHelper(this);
+
+        //on click listers
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View view){
+                //do things on register button click
+                String user = username.getText().toString();
+                String pw = password.getText().toString();
+                String rPW = rePassword.getText().toString();
+
+                if (user.equals("") || pw.equals("") || rPW.equals(""))
+                    Toast.makeText(MainActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
+                else
+                    if  (pw.equals(rPW)){
+                        if (DB.checkUsername(user) == false){
+                            if (DB.insertData(user, pw)){
+                                Toast.makeText(MainActivity.this, "Registered Succesfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "User already exists", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(MainActivity.this, "Password do not match", Toast.LENGTH_SHORT).show();
+                    }
             }
         });
+
+        btnExistingUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                // do things on sign in button click
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
