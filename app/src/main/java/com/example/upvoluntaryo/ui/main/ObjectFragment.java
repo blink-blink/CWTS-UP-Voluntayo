@@ -1,13 +1,10 @@
 package com.example.upvoluntaryo.ui.main;
 
-import android.app.usage.UsageEvents;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +14,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.upvoluntaryo.Event;
+import com.example.upvoluntaryo.EventPageActivity;
+import com.example.upvoluntaryo.Orgs;
 import com.example.upvoluntaryo.R;
 
 import java.util.ArrayList;
 
-public class ObjectFragment extends Fragment {
+public class ObjectFragment extends Fragment implements EventListAdapter.OnEventListener {
     public static final String ARG_OBJECT = "object";
+
+    // vars
+    private ArrayList<Event> eventList = new ArrayList<>();
+    private EventListAdapter eventListadapter;
+    private ArrayList<Orgs> orgList = new ArrayList<>();
+    private OrgListAdapter orgListAdapter;
 
     @Nullable
     @Override
@@ -35,8 +40,7 @@ public class ObjectFragment extends Fragment {
         Bundle args = getArguments();
         if (args.getInt(ARG_OBJECT) == 1){
 
-            ArrayList<Event> eventList = new ArrayList<>();
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.eventRecyclerView);
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.itemRecyclerView);
 
             //test
             eventList.add(new Event("Red Check Blood Drive", "eventAddress1", "eventDetails123", R.id.eventImageHeader));
@@ -44,15 +48,38 @@ public class ObjectFragment extends Fragment {
             eventList.add(new Event("Red Check Blood Drive", "eventAddress1", "eventDetails1234", R.id.eventImageHeader));
             eventList.add(new Event("Red Check Blood Drive", "eventAddress1", "eventDetails123", R.id.eventImageHeader));
 
-            EventListAdapter adapter = new EventListAdapter(eventList);
+            eventListadapter = new EventListAdapter( eventList, this);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(adapter);
+            recyclerView.setAdapter(eventListadapter);
 
         }
+        else{
 
-        //Bundle args = getArguments();
-        //((TextView) view.findViewById(R.id.teststring)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.itemRecyclerView);
+
+            //test
+            orgList.add(new Orgs("Org Name1", "Org Details1"));
+            orgList.add(new Orgs("Org Name2", "Org Details2"));
+            orgList.add(new Orgs("Org Name3", "Org Details3"));
+            orgList.add(new Orgs("Org Name4", "Org Details4"));
+
+            orgListAdapter = new OrgListAdapter(orgList);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(orgListAdapter);
+
+        }
+    }
+
+    @Override
+    public void onEventClick(int position) {
+        //nav to activity
+        Intent intent = new Intent(getContext(), EventPageActivity.class);
+        intent.putExtra("eventPageName", eventList.get(position).getEventName());
+        intent.putExtra("eventPageDetails", eventList.get(position).getEventDetails());
+        startActivity(intent);
     }
 }
