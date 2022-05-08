@@ -2,30 +2,36 @@ package com.example.upvoluntaryo;
 
 import android.os.Bundle;
 
+import com.example.upvoluntaryo.ui.main.CollectionAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.viewpager.widget.ViewPager;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
-import com.example.upvoluntaryo.ui.main.SectionsPagerAdapter;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class HomeActivity extends AppCompatActivity {
+
+    @StringRes
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+        CollectionAdapter collectionAdapter = new CollectionAdapter(this);
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(collectionAdapter);
+        TabLayout tabLayout = findViewById(R.id.tabs);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(getResources().getString(TAB_TITLES[position]))
+        ).attach();
+
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {

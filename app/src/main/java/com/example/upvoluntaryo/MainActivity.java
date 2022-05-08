@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                     if  (pw.equals(rPW)){
                         if (DB.checkUsername(user) == false){
-                            if (DB.insertData(user, pw)){
+                            if (DB.insertUserData(user, pw)){
                                 Toast.makeText(MainActivity.this, "Registered Succesfully", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
                                 startActivity(intent);

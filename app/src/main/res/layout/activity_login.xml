@@ -19,29 +19,43 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/usernameR"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/usernameRLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username"
-
         android:layout_marginHorizontal="50dp"
         android:layout_marginTop="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signin"/>
+        app:layout_constraintTop_toBottomOf="@+id/signin">
 
-    <EditText
-        android:id="@+id/passwordR"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/usernameR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordRLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginHorizontal="50dp"
-        android:hint="Password"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameR" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameRLayout"
+
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/colorPrimaryDark">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/loginButton"
@@ -51,7 +65,7 @@
         android:text="Log in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordR" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordRLayout" />
 
     <TextView
         android:id="@+id/forgotPw"
