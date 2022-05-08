@@ -17,8 +17,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.upvoluntaryo.DBHelper;
 import com.example.upvoluntaryo.Event;
 import com.example.upvoluntaryo.EventPageActivity;
+import com.example.upvoluntaryo.HomeActivity;
 import com.example.upvoluntaryo.Orgs;
 import com.example.upvoluntaryo.R;
 
@@ -33,6 +35,8 @@ public class ObjectFragment extends Fragment implements EventListAdapter.OnEvent
     private ArrayList<Orgs> orgList = new ArrayList<>();
     private OrgListAdapter orgListAdapter;
     private SearchViewModel searchViewModel;
+    private EventViewModel eventViewModel;
+    DBHelper DB;
 
     @Nullable
     @Override
@@ -47,17 +51,23 @@ public class ObjectFragment extends Fragment implements EventListAdapter.OnEvent
 
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.itemRecyclerView);
 
-            //test
-            eventList.add(new Event("Red Check Blood Drive", "eventAddress1", "eventDetails123", R.id.eventImageHeader));
-            eventList.add(new Event("Blue Check Blood Drive", "eventAddress1", "eventDetails1234", R.id.eventImageHeader));
-            eventList.add(new Event("Red Check Blood Drive", "eventAddress1", "eventDetails1234", R.id.eventImageHeader));
-            eventList.add(new Event("Red Check Blood Drive", "eventAddress1", "eventDetails123", R.id.eventImageHeader));
+            DB = new DBHelper(getContext());
+
+            eventList = DB.listEvents();
 
             eventListAdapter = new EventListAdapter( eventList, this);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(eventListAdapter);
+
+            eventViewModel = new ViewModelProvider(requireActivity()).get(EventViewModel.class);
+            eventViewModel.getEventListData(getContext()).observe(getViewLifecycleOwner(), new Observer<ArrayList<Event>>() {
+                @Override
+                public void onChanged(ArrayList<Event> eventArrayList) {
+                    eventListAdapter.updateEventList(DB.listEvents());
+                }
+            });
 
         }
         else{
@@ -80,8 +90,10 @@ public class ObjectFragment extends Fragment implements EventListAdapter.OnEvent
         searchViewModel.getQuery().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                if (orgListAdapter != null) orgListAdapter.getFilter().filter(s);
-                if (eventListAdapter != null) eventListAdapter.getFilter().filter(s);
+                if (s!=null) {
+                    if (orgListAdapter != null) orgListAdapter.getFilter().filter(s);
+                    if (eventListAdapter != null) eventListAdapter.getFilter().filter(s);
+                }
             }
         });
     }

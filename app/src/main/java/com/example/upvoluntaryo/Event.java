@@ -2,20 +2,48 @@ package com.example.upvoluntaryo;
 
 public class Event {
     String eventName, eventAddress, eventDetails;
-    int imageId;
+    int eventId,orgId,imageId;
 
-    public Event(String eventName, String eventAddress, String eventDetails, int imageId){
+////constructors
+    public Event(int eventId, String eventName, String eventAddress, String eventDetails, int orgId, int imageId){
+        this.eventId = eventId;
         this.eventName = eventName;
         this.eventAddress = eventAddress;
         this.eventDetails = eventDetails;
+        this.orgId = orgId;
         this.imageId = imageId;
+    }
+
+    public Event(String eventName, String eventAddress, String eventDetails, int orgId, int imageId){
+        this.eventName = eventName;
+        this.eventAddress = eventAddress;
+        this.eventDetails = eventDetails;
+        this.orgId = orgId;
+        this.imageId = imageId;
+    }
+/////
+
+    public int getEventId() {
+        return eventId;
     }
 
     public String getEventName() {
         return eventName;
     }
 
+    public String getEventAddress() {
+        return eventAddress;
+    }
+
     public String getEventDetails() {
         return eventDetails;
+    }
+
+    public int getOrgId() {
+        return orgId;
+    }
+
+    public int getImageId() {
+        return imageId;
     }
 }

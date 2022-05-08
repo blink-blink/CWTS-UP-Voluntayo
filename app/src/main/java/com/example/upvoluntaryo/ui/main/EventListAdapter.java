@@ -26,6 +26,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         eventListFull = new ArrayList<>(eventList);
     }
 
+    public void updateEventList(ArrayList<Event> eventList) {
+        this.eventList.clear();
+        this.eventList.addAll(eventList);
+        this.eventListFull.clear();
+        this.eventListFull.addAll(eventList);
+        notifyDataSetChanged();
+    }
+
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView eventName;
         private TextView eventDetails;

@@ -3,6 +3,8 @@ package com.example.upvoluntaryo;
 import android.os.Bundle;
 
 import com.example.upvoluntaryo.ui.main.CollectionAdapter;
+import com.example.upvoluntaryo.ui.main.EventListAdapter;
+import com.example.upvoluntaryo.ui.main.EventViewModel;
 import com.example.upvoluntaryo.ui.main.SearchViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -12,12 +14,15 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.Random;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -58,8 +63,49 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Event Added", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                DBHelper DB = new DBHelper(getApplicationContext());
+
+                //test
+                Random r = new Random();
+                switch (r.nextInt(5)){
+                    case 0:
+                        DB.addEvent(new Event("Red Check Blood Drive",
+                                "middle of nowhere",
+                                "sample event details",
+                                0,0));
+                        break;
+                    case 1:
+                        DB.addEvent(new Event("Blue Check Blood Drive",
+                                "middle of nowhere",
+                                "sample event details2",
+                                0,0));
+                        break;
+                    case 2:
+                        DB.addEvent(new Event("Green Check Blood Drive",
+                                "middle of nowhere",
+                                "sample event details2",
+                                0,0));
+                        break;
+                    case 3:
+                        DB.addEvent(new Event("Yellow Check Blood Drive",
+                                "middle of nowhere",
+                                "sample event details2",
+                                0,0));
+                        break;
+                    case 4:
+                        DB.addEvent(new Event("Orange Check Blood Drive",
+                                "middle of nowhere",
+                                "sample event details2",
+                                0,0));
+                        break;
+                }
+
+                //DB.clearEvents();
+                //EventViewModel
+                EventViewModel eventViewModel = new ViewModelProvider(HomeActivity.this).get(EventViewModel.class);
+                eventViewModel.setEventListData(DB.listEvents());
             }
         });
     }
