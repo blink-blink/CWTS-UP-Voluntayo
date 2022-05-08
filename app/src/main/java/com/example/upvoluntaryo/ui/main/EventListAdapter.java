@@ -3,6 +3,8 @@ package com.example.upvoluntaryo.ui.main;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,13 +15,15 @@ import com.example.upvoluntaryo.R;
 
 import java.util.ArrayList;
 
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> {
+public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> implements Filterable {
     private ArrayList<Event> eventList;
+    private ArrayList<Event> eventListFull;
     private OnEventListener onEventListener;
 
     public EventListAdapter(ArrayList<Event> eventList, OnEventListener onEventListener){
         this.eventList = eventList;
         this.onEventListener = onEventListener;
+        eventListFull = new ArrayList<>(eventList);
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -65,4 +69,41 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     public interface OnEventListener {
         void onEventClick(int position);
     }
+
+    @Override
+    public Filter getFilter() {
+        return eventListFilter;
+    }
+
+    private Filter eventListFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0 ){
+                filteredList.addAll(eventListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Event event : eventListFull){
+                    if (event.getEventName().toLowerCase().contains(filterPattern) ||
+                            event.getEventDetails().toLowerCase().contains(filterPattern)){
+                        filteredList.add(event);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults results) {
+            eventList.clear();
+            eventList.addAll((ArrayList) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
