@@ -2,8 +2,7 @@ package com.example.upvoluntaryo;
 
 import android.os.Bundle;
 
-import com.example.upvoluntaryo.ui.main.CollectionAdapter;
-import com.example.upvoluntaryo.ui.main.EventListAdapter;
+import com.example.upvoluntaryo.ui.main.ObjectAdapter;
 import com.example.upvoluntaryo.ui.main.EventViewModel;
 import com.example.upvoluntaryo.ui.main.SearchViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -14,10 +13,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -33,9 +30,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        CollectionAdapter collectionAdapter = new CollectionAdapter(this);
+        ObjectAdapter objectAdapter = new ObjectAdapter(this);
         ViewPager2 viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(collectionAdapter);
+        viewPager.setAdapter(objectAdapter);
         TabLayout tabLayout = findViewById(R.id.tabs);
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(getResources().getString(TAB_TITLES[position]))
