@@ -29,10 +29,9 @@ public class EventPageActivity extends AppCompatActivity {
         viewPager.setAdapter(eventPageAdapter);
 
         TabLayout tabLayout = findViewById(R.id.ep_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Description"));
-        tabLayout.addTab(tabLayout.newTab().setText("Rules"));
-        tabLayout.addTab(tabLayout.newTab().setText("Project POC"));
-        tabLayout.addTab(tabLayout.newTab().setText("About Org"));
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(EVENT_PAGE_TAB_TITLES[position])
+        ).attach();
 
     }
 }
