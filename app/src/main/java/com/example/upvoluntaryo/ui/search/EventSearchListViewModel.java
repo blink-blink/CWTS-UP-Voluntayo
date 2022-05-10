@@ -1,4 +1,4 @@
-package com.example.upvoluntaryo.ui.main;
+package com.example.upvoluntaryo.ui.search;
 
 import android.content.Context;
 
@@ -7,11 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.upvoluntaryo.DBHelper;
-import com.example.upvoluntaryo.Event;
+import com.example.upvoluntaryo.objects.Event;
 
 import java.util.ArrayList;
 
-public class EventViewModel extends ViewModel {
+public class EventSearchListViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Event>> eventListData;
     private DBHelper DB;
 

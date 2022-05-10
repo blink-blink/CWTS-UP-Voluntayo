@@ -1,6 +1,4 @@
-package com.example.upvoluntaryo.ui.main;
-
-import android.os.Bundle;
+package com.example.upvoluntaryo.eventpage;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

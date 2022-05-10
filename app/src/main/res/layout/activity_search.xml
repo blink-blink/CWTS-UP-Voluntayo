@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".SearchActivity">
 
     <LinearLayout
+        android:id="@+id/searchViewBackgrond"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -20,14 +21,16 @@
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchItem"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:transitionName="searchtransition_animation"/>
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
+            android:id="@+id/searchListBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/roundcorner_layout_bg">
+            android:background="@drawable/roundtopcorner_layout_bg">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"

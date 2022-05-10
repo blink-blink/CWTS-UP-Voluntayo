@@ -7,9 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import com.example.upvoluntaryo.objects.Event;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {

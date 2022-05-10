@@ -1,4 +1,4 @@
-package com.example.upvoluntaryo.ui.main;
+package com.example.upvoluntaryo.ui.search;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +10,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.upvoluntaryo.Event;
+import com.example.upvoluntaryo.objects.Event;
 import com.example.upvoluntaryo.R;
 
 import java.util.ArrayList;
 
-public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder> implements Filterable {
-    private ArrayList<Event> eventList;
-    private ArrayList<Event> eventListFull;
+public class EventSearchListAdapter extends RecyclerView.Adapter<EventSearchListAdapter.EventViewHolder> implements Filterable {
+    private ArrayList<Event> eventSearchList;
+    private ArrayList<Event> eventSearchListFull;
     private OnEventListener onEventListener;
 
-    public EventListAdapter(ArrayList<Event> eventList, OnEventListener onEventListener){
-        this.eventList = eventList;
+    public EventSearchListAdapter(ArrayList<Event> eventSearchList, OnEventListener onEventListener){
+        this.eventSearchList = eventSearchList;
         this.onEventListener = onEventListener;
-        eventListFull = new ArrayList<>(eventList);
+        eventSearchListFull = new ArrayList<>(eventSearchList);
     }
 
     public void updateEventList(ArrayList<Event> eventList) {
-        this.eventList.clear();
-        this.eventList.addAll(eventList);
-        this.eventListFull.clear();
-        this.eventListFull.addAll(eventList);
+        this.eventSearchList.clear();
+        this.eventSearchList.addAll(eventList);
+        this.eventSearchListFull.clear();
+        this.eventSearchListFull.addAll(eventList);
         notifyDataSetChanged();
     }
 
@@ -56,22 +56,22 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
     @NonNull
     @Override
-    public EventListAdapter.EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item, parent, false);
+    public EventSearchListAdapter.EventViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_search_item, parent, false);
         return new EventViewHolder(itemView, onEventListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EventListAdapter.EventViewHolder holder, int position) {
-        String eventName = eventList.get(position).getEventName();
-        String eventDetails = eventList.get(position).getEventDetails();
+    public void onBindViewHolder(@NonNull EventSearchListAdapter.EventViewHolder holder, int position) {
+        String eventName = eventSearchList.get(position).getEventName();
+        String eventDetails = eventSearchList.get(position).getEventDetails();
         holder.eventName.setText(eventName);
         holder.eventDetails.setText(eventDetails);
     }
 
     @Override
     public int getItemCount() {
-        return eventList.size();
+        return eventSearchList.size();
     }
 
     public interface OnEventListener {
@@ -89,11 +89,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             ArrayList filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0 ){
-                filteredList.addAll(eventListFull);
+                filteredList.addAll(eventSearchListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (Event event : eventListFull){
+                for (Event event : eventSearchListFull){
                     if (event.getEventName().toLowerCase().contains(filterPattern) ||
                             event.getEventDetails().toLowerCase().contains(filterPattern)){
                         filteredList.add(event);
@@ -109,8 +109,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults results) {
-            eventList.clear();
-            eventList.addAll((ArrayList) results.values);
+            eventSearchList.clear();
+            eventSearchList.addAll((ArrayList) results.values);
             notifyDataSetChanged();
         }
     };

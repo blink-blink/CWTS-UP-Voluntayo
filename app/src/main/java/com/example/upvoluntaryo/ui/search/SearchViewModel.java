@@ -1,4 +1,4 @@
-package com.example.upvoluntaryo.ui.main;
+package com.example.upvoluntaryo.ui.search;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

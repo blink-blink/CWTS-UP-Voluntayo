@@ -6,7 +6,7 @@
     android:layout_margin="5dp"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.main.EventPageFragment">
+    tools:context=".eventpage.EventPageFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/roundcorner_layout_bg"
             android:scaleType="centerCrop"
             android:src="@drawable/sampleeventimage" />
 
@@ -26,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="-50dp"
             android:orientation="vertical"
-            android:background="@drawable/roundcorner_layout_bg">
+            android:background="@drawable/roundtopcorner_layout_bg">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/ep_tabs"

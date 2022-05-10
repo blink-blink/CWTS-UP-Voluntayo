@@ -1,4 +1,4 @@
-package com.example.upvoluntaryo;
+package com.example.upvoluntaryo.objects;
 
 public class Orgs {
     String orgName, orgDetails;

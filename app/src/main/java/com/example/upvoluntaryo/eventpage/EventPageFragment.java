@@ -1,4 +1,4 @@
-package com.example.upvoluntaryo.ui.main;
+package com.example.upvoluntaryo.eventpage;
 
 import android.os.Bundle;
 

@@ -1,10 +1,12 @@
 package com.example.upvoluntaryo;
 
+import android.app.Instrumentation;
 import android.os.Bundle;
 
-import com.example.upvoluntaryo.ui.main.ObjectAdapter;
-import com.example.upvoluntaryo.ui.main.EventViewModel;
-import com.example.upvoluntaryo.ui.main.SearchViewModel;
+import com.example.upvoluntaryo.objects.Event;
+import com.example.upvoluntaryo.ui.search.SearchAdapter;
+import com.example.upvoluntaryo.ui.search.EventSearchListViewModel;
+import com.example.upvoluntaryo.ui.search.SearchViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -13,6 +15,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
+import android.transition.Fade;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.View;
@@ -21,7 +24,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Random;
 
-public class HomeActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2};
@@ -29,10 +32,20 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        ObjectAdapter objectAdapter = new ObjectAdapter(this);
+        setContentView(R.layout.activity_search);
+
+        // window animation
+        Fade fade = new Fade();
+        View decor = getWindow().getDecorView();
+        fade.excludeTarget(decor.findViewById(R.id.action_container),true);
+        fade.excludeTarget(android.R.id.statusBarBackground,true);
+        fade.excludeTarget(android.R.id.navigationBarBackground,true);
+        getWindow().setEnterTransition(fade);
+        getWindow().setExitTransition(fade);
+
+        SearchAdapter searchAdapter = new SearchAdapter(this);
         ViewPager2 viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(objectAdapter);
+        viewPager.setAdapter(searchAdapter);
         TabLayout tabLayout = findViewById(R.id.tabs);
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> tab.setText(getResources().getString(TAB_TITLES[position]))
@@ -41,6 +54,8 @@ public class HomeActivity extends AppCompatActivity {
         //SearchView
         SearchViewModel searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         SearchView searchItem = (SearchView) findViewById(R.id.searchItem);
+        searchItem.setIconified(false);
+        //searchItem.requestFocus();
 
         searchItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -100,10 +115,17 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 //DB.clearEvents();
-                //EventViewModel
-                EventViewModel eventViewModel = new ViewModelProvider(HomeActivity.this).get(EventViewModel.class);
-                eventViewModel.setEventListData(DB.listEvents());
+                //EventSearchListViewModel
+                EventSearchListViewModel eventSearchListViewModel = new ViewModelProvider(SearchActivity.this).get(EventSearchListViewModel.class);
+                eventSearchListViewModel.setEventListData(DB.listEvents());
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        if (!isFinishing())
+            new Instrumentation().callActivityOnSaveInstanceState(this, new Bundle());
+        super.onStop();
     }
 }

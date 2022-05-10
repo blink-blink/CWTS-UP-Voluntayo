@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home" />
+        <activity
             android:name=".EventPageActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -25,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HomeActivity"
+            android:name=".SearchActivity"
             android:exported="true"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
