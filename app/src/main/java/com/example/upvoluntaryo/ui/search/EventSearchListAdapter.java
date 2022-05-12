@@ -36,7 +36,7 @@ public class EventSearchListAdapter extends RecyclerView.Adapter<EventSearchList
 
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView eventName;
-        private TextView eventDetails;
+        private TextView     eventDetails;
         OnEventListener onEventListener;
 
         public EventViewHolder(final View view, OnEventListener onEventListener){
