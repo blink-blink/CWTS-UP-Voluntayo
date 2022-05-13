@@ -4,6 +4,8 @@ import android.app.Instrumentation;
 import android.os.Bundle;
 
 import com.example.upvoluntaryo.objects.Event;
+import com.example.upvoluntaryo.objects.Orgs;
+import com.example.upvoluntaryo.ui.search.OrgSearchListViewModel;
 import com.example.upvoluntaryo.ui.search.SearchAdapter;
 import com.example.upvoluntaryo.ui.search.EventSearchListViewModel;
 import com.example.upvoluntaryo.ui.search.SearchViewModel;
@@ -85,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
                     case 0:
                         DB.addEvent(new Event("Red Check Blood Drive",
                                 "middle of nowhere",
-                                "sample event details",
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac faucibus nibh. In placerat auctor velit, non mollis diam ultrices in. Pellentesque elementum, quam in pharetra tincidunt, risus odio ultricies massa, porttitor pharetra nisl turpis ut sem. Nullam pretium facilisis nunc, quis luctus nibh vestibulum vel. Vivamus condimentum, nunc vitae scelerisque rutrum, felis sapien hendrerit orci, sollicitudin sagittis massa tellus in tortor. Vivamus et auctor dolor. Nam turpis quam, congue sit amet semper at, mollis sit amet felis. Vivamus nec varius leo. Nam quis nibh a felis pharetra luctus vel in quam. Nulla a volutpat odio, vitae vestibulum neque.",
                                 0,0));
                         break;
                     case 1:
@@ -114,10 +116,15 @@ public class SearchActivity extends AppCompatActivity {
                         break;
                 }
 
+                DB.addOrg(new Orgs("Sample Org "+r.nextInt(),
+                        "Sample Org Details"));
+
                 //DB.clearEvents();
                 //EventSearchListViewModel
                 EventSearchListViewModel eventSearchListViewModel = new ViewModelProvider(SearchActivity.this).get(EventSearchListViewModel.class);
                 eventSearchListViewModel.setEventListData(DB.listEvents());
+                OrgSearchListViewModel orgSearchListViewModel = new ViewModelProvider(SearchActivity.this).get(OrgSearchListViewModel.class);
+                orgSearchListViewModel.setOrgListData(DB.listOrgs());
             }
         });
     }

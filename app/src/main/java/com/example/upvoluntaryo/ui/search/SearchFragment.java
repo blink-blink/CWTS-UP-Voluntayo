@@ -33,6 +33,7 @@ public class SearchFragment extends Fragment implements EventSearchListAdapter.O
     private OrgSearchListAdapter orgSearchListAdapter;
     private SearchViewModel searchViewModel;
     private EventSearchListViewModel eventSearchListViewModel;
+    private OrgSearchListViewModel orgSearchListViewModel;
     DBHelper DB;
 
     @Nullable
@@ -71,17 +72,23 @@ public class SearchFragment extends Fragment implements EventSearchListAdapter.O
 
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.searchRecyclerView);
 
-            //test
-            orgList.add(new Orgs("Org Name1", "Org Details1"));
-            orgList.add(new Orgs("Org Name2", "Org Details2"));
-            orgList.add(new Orgs("Org Name3", "Org Details3"));
-            orgList.add(new Orgs("Org Name4", "Org Details4"));
+            DB = new DBHelper(getContext());
+
+            orgList = DB.listOrgs();
 
             orgSearchListAdapter = new OrgSearchListAdapter(orgList);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(orgSearchListAdapter);
+
+            orgSearchListViewModel = new ViewModelProvider(requireActivity()).get(OrgSearchListViewModel.class);
+            orgSearchListViewModel.getEventListData(getContext()).observe(getViewLifecycleOwner(), new Observer<ArrayList<Orgs>>() {
+                @Override
+                public void onChanged(ArrayList<Orgs> orgsArrayList) {
+                    orgSearchListAdapter.updateOrgList(DB.listOrgs());
+                }
+            });
         }
         searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
         searchViewModel.getQuery().observe(getViewLifecycleOwner(), new Observer<String>() {

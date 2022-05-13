@@ -20,8 +20,8 @@ public class EventSearchListViewModel extends ViewModel {
     }
 
     LiveData<ArrayList<Event>> getEventListData(Context context){
-        DB = new DBHelper(context);
         if (eventListData == null){
+            DB = new DBHelper(context);
             eventListData = new MutableLiveData<>();
             eventListData.setValue(DB.listEvents());
         }

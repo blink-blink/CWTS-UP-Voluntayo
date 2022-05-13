@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.upvoluntaryo.objects.Event;
+import com.example.upvoluntaryo.objects.Orgs;
 
 import java.util.ArrayList;
 
@@ -20,18 +21,18 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TABLE_EVENTS = "events";
 
     public DBHelper(Context context) {
-        super(context, "Login.db", null, 2);
+        super(context, "Login.db", null, 3);
     }
 
     @Override
     public void onCreate(SQLiteDatabase MyDB) {
         MyDB.execSQL("create Table " + TABLE_USERS +
                 "(user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "full_name TEXT NOT NULL, " +
+                "full_name TEXT, " +
                 "username TEXT UNIQUE NOT NULL, " +
                 "password TEXT NOT NULL, " +
-                "pronoun INTEGER NOT NULL, " +
-                "birthday DATETIME NOT NULL, " +
+                "pronoun INTEGER, " +
+                "birthday DATETIME, " +
                 "about TEXT)");
         MyDB.execSQL("create Table " + TABLE_ORGS +
                 "(org_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -55,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 "event_name TEXT, " +
                 "event_address TEXT, " +
                 "event_details TEXT," +
-                "event_date DATETIME NOT NULL," +
+                "event_date DATETIME," +
                 "target INTEGER, " +
                 "org_id INTEGER NOT NULL," +
                 "FOREIGN KEY (org_id) REFERENCES " + TABLE_ORGS + " (org_id))");
@@ -124,7 +125,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 String eventDate = cursor.getString(5);
                 int target = Integer.parseInt(cursor.getString(6));
                 int orgID = Integer.parseInt(cursor.getString(7));
-                eventList.add(new Event(eventID, eventType, eventName, eventAddress, eventDetails, /*eventDate, */orgID,0));
+                eventList.add(new Event(eventID, eventType, eventName, eventAddress, eventDetails, eventDate, orgID,0,0));
             }
             while (cursor.moveToNext());
         }
@@ -169,12 +170,29 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (org_id) REFERENCES " + TABLE_ORGS + " (org_id))");
     }
 
+    public ArrayList<Orgs> listOrgs(){
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        ArrayList<Orgs> orgList = new ArrayList<>();
+        Cursor cursor = MyDB.rawQuery("select * from " + TABLE_ORGS, null);
+        if (cursor.moveToFirst()){
+            do {
+                int orgID = Integer.parseInt(cursor.getString(0));
+                String orgName = cursor.getString(1);
+                String orgDetails = cursor.getString(2);
+                orgList.add(new Orgs(orgID,orgName,orgDetails));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return orgList;
+    }
+
     public Boolean addOrg(Orgs org){
         SQLiteDatabase MyDB = this.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("org_name", event.getEventName());
-        contentValues.put("org_details", event.getEventDetails());
+        contentValues.put("org_name", org.getOrgName());
+        contentValues.put("org_details", org.getOrgDetails());
 
         long result = MyDB.insert(TABLE_ORGS, null, contentValues);
         if (result == -1) return false;

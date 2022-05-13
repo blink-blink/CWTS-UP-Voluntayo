@@ -10,6 +10,11 @@ public class Orgs {
         this.orgDetails = orgDetails;
     }
 
+    public Orgs(String orgName, String orgDetails) {
+        this.orgName = orgName;
+        this.orgDetails = orgDetails;
+    }
+
     public int getOrgId() {
         return orgId;
     }

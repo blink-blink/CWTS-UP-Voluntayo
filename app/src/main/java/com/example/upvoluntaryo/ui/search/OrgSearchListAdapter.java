@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.upvoluntaryo.objects.Event;
 import com.example.upvoluntaryo.objects.Orgs;
 import com.example.upvoluntaryo.R;
 
@@ -22,6 +23,14 @@ public class OrgSearchListAdapter extends RecyclerView.Adapter<OrgSearchListAdap
     public OrgSearchListAdapter(ArrayList<Orgs> orgSearchList) {
         this.orgSearchList = orgSearchList;
         orgSearchListFull = new ArrayList<>(orgSearchList);
+    }
+
+    public void updateOrgList(ArrayList<Orgs> orgList) {
+        this.orgSearchList.clear();
+        this.orgSearchList.addAll(orgList);
+        this.orgSearchListFull.clear();
+        this.orgSearchListFull.addAll(orgList);
+        notifyDataSetChanged();
     }
 
     public class OrgViewHolder extends RecyclerView.ViewHolder{

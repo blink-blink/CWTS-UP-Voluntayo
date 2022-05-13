@@ -66,7 +66,12 @@ public class EventSearchListAdapter extends RecyclerView.Adapter<EventSearchList
         String eventName = eventSearchList.get(position).getEventName();
         String eventDetails = eventSearchList.get(position).getEventDetails();
         holder.eventName.setText(eventName);
-        holder.eventDetails.setText(eventDetails);
+
+        int maxLength = 100;
+        if (eventDetails.length() > maxLength)
+            holder.eventDetails.setText(eventDetails.substring(0,maxLength)+"...");
+        else
+            holder.eventDetails.setText(eventDetails);
     }
 
     @Override
