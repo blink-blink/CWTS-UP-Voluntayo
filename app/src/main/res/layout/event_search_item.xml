@@ -42,6 +42,9 @@
             android:layout_height="wrap_content"
             android:text="Sample event description"
             android:textSize="13sp"
-            android:textColor="@color/colorSubtext"/>
+            android:textColor="@color/colorSubtext"
+            android:maxLines="2"
+            android:ellipsize="end"
+            />
     </LinearLayout>
 </LinearLayout>
