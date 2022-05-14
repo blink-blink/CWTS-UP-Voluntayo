@@ -1,6 +1,7 @@
 package com.example.upvoluntaryo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,10 +26,16 @@ public class MainActivity extends AppCompatActivity {
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+                SessionManager sessionManager = new SessionManager(MainActivity.this);
+                Intent intent;
+                if (sessionManager.checkLogin()){
+                    intent = new Intent(getApplicationContext(), HomeActivity.class);
+                }
+                else
+                    intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(intent);
                 finish();
             }
-        }, 3000);
+        }, 1000);
     }
 }

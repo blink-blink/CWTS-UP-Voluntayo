@@ -108,6 +108,7 @@ public class SearchFragment extends Fragment implements EventSearchListAdapter.O
     public void onEventClick(int position) {
         //nav to activity
         Intent intent = new Intent(getContext(), EventPageActivity.class);
+        intent.putExtra("eventId", eventList.get(position).getEventId());
         intent.putExtra("eventPageName", eventList.get(position).getEventName());
         intent.putExtra("eventPageDetails", eventList.get(position).getEventDetails());
         startActivity(intent);

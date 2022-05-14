@@ -239,4 +239,13 @@
             android:text="I live in the Philippines. Government is about to be one hell of a ride here. God please let me out and good luck to this damn country"
             android:textSize="15dp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent
+"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

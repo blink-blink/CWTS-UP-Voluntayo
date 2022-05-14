@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.upvoluntaryo.objects.Event;
 import com.example.upvoluntaryo.objects.Orgs;
+import com.example.upvoluntaryo.objects.Users;
 
 import java.util.ArrayList;
 
@@ -96,19 +97,21 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
     }
 
-    public Boolean checkUsernamePassword(String username, String password){
+    public Users checkUsernamePassword(String username, String password){
         SQLiteDatabase MyDB = this.getWritableDatabase();
         Cursor cursor = MyDB.rawQuery("select * from " + TABLE_USERS + " where username = ? and password = ?", new String[] {username,password});
 
         if (cursor.getCount() > 0) {
-            //debug
             cursor.moveToFirst();
-            String log = cursor.getString(0);
-            Log.d("DBHelper", "user_id:" + log);
-            return true;
+            int user_id = Integer.parseInt(cursor.getString(0));
+            String fullName = cursor.getString(1);
+            int pronoun = 0;
+            //int pronoun = Integer.parseInt(cursor.getString(4));
+            String birthday = cursor.getString(5);
+            String about = cursor.getString(6);
+            return (new Users(user_id, fullName, username, password, pronoun,birthday,about));
         }
-        else
-            return false;
+        return null;
     }
 
     public ArrayList<Event> listEvents(){
@@ -213,5 +216,28 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = MyDB.insert(TABLE_FOLLOWING, null, contentValues);
         if (result == -1) return false;
         else return true;
+    }
+
+    public ArrayList<Event> listFollowedEvents(int userId){
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        ArrayList<Event> eventList = new ArrayList<>();
+        Cursor cursor = MyDB.rawQuery("select * from " + TABLE_EVENTS+ " left join "+TABLE_FOLLOWING+
+                " on "+TABLE_EVENTS+".event_id = "+TABLE_FOLLOWING+".event_id where "+TABLE_FOLLOWING+".user_id = ?", new String[] {Integer.toString(userId)});
+        if (cursor.moveToFirst()){
+            do {
+                int eventID = Integer.parseInt(cursor.getString(0));
+                int eventType = Integer.parseInt(cursor.getString(1));
+                String eventName = cursor.getString(2);
+                String eventAddress = cursor.getString(3);
+                String eventDetails = cursor.getString(4);
+                String eventDate = cursor.getString(5);
+                int target = Integer.parseInt(cursor.getString(6));
+                int orgID = Integer.parseInt(cursor.getString(7));
+                eventList.add(new Event(eventID, eventType, eventName, eventAddress, eventDetails, eventDate, orgID,0,0));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return eventList;
     }
 }

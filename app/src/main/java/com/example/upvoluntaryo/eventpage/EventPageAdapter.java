@@ -6,9 +6,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class EventPageAdapter extends FragmentStateAdapter {
+    private int eventId;
     private String eventName, eventDetails;
-    public EventPageAdapter(FragmentActivity fragment,String eventName, String eventDetails) {
+
+    public EventPageAdapter(FragmentActivity fragment, int eventId, String eventName, String eventDetails) {
         super(fragment);
+        this.eventId = eventId;
         this.eventName = eventName;
         this.eventDetails = eventDetails;
     }

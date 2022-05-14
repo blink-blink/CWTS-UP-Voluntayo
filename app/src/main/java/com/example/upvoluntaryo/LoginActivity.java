@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.upvoluntaryo.objects.Users;
+
 public class LoginActivity extends AppCompatActivity {
 
     EditText username, password;
@@ -35,7 +37,19 @@ public class LoginActivity extends AppCompatActivity {
                 if (user.equals("") || pw.equals(""))
                     Toast.makeText(LoginActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 else {
-                    if (DB.checkUsernamePassword(user,pw)){
+                    Users logInUser = DB.checkUsernamePassword(user,pw);
+                    if (logInUser != null){
+
+                        //session manager
+                        SessionManager sessionManager = new SessionManager(LoginActivity.this);
+                        sessionManager.createLoginSession(logInUser.getUserId(),
+                                logInUser.getFullName(),
+                                logInUser.getUsername(),
+                                logInUser.getPassword(),
+                                logInUser.getPronoun(),
+                                logInUser.getBirthday(),
+                                logInUser.getAbout());
+
                         Toast.makeText(LoginActivity.this, "Sign in sucessful!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         startActivity(intent);

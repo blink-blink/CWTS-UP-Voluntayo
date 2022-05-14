@@ -26,6 +26,7 @@ import com.example.upvoluntaryo.DBHelper;
 import com.example.upvoluntaryo.EventPageActivity;
 import com.example.upvoluntaryo.R;
 import com.example.upvoluntaryo.SearchActivity;
+import com.example.upvoluntaryo.SessionManager;
 import com.example.upvoluntaryo.databinding.FragmentHomeBinding;
 import com.example.upvoluntaryo.objects.Event;
 import com.example.upvoluntaryo.ui.search.EventSearchListAdapter;
@@ -63,12 +64,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener,HomeL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.searchRecyclerView);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.homeRecyclerView);
 
         DB = new DBHelper(getContext());
 
         //change to listFollowedEvents()
-        eventList = DB.listEvents();
+        SessionManager sessionManager = new SessionManager(getActivity());
+        eventList = DB.listFollowedEvents(sessionManager.getUsersDataFromSession().getUserId());
 
         homeListAdapter = new HomeListAdapter( eventList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -94,6 +96,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener,HomeL
     public void onEventClick(int position) {
         //nav to activity
         Intent intent = new Intent(getContext(), EventPageActivity.class);
+        intent.putExtra("eventId", eventList.get(position).getEventId());
         intent.putExtra("eventPageName", eventList.get(position).getEventName());
         intent.putExtra("eventPageDetails", eventList.get(position).getEventDetails());
         startActivity(intent);

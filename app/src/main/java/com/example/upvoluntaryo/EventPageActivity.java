@@ -15,7 +15,9 @@ import android.os.Bundle;
 import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.upvoluntaryo.eventpage.EventPageAdapter;
@@ -26,6 +28,7 @@ import jp.wasabeef.blurry.Blurry;
 
 public class EventPageActivity extends AppCompatActivity {
     BitmapDrawable bitmapDrawable;
+    DBHelper DB;
 
     @StringRes
     private static final String[] EVENT_PAGE_TAB_TITLES = new String[]{"Description", "Rules", "Project POC", "About Org"};
@@ -50,6 +53,7 @@ public class EventPageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         EventPageAdapter eventPageAdapter = new EventPageAdapter(this,
+                intent.getIntExtra("eventId",0),
                 intent.getStringExtra("eventPageName"),
                 intent.getStringExtra("eventPageDetails"));
         ViewPager2 viewPager = findViewById(R.id.ep_view_pager);
@@ -60,6 +64,16 @@ public class EventPageActivity extends AppCompatActivity {
                 (tab, position) -> tab.setText(EVENT_PAGE_TAB_TITLES[position])
         ).attach();
 
+        Button followButton = findViewById(R.id.ep_follow_button);
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SessionManager sessionManager = new SessionManager(EventPageActivity.this);
+                //follow
+                DB = new DBHelper(EventPageActivity.this);
+                DB.followEvent(sessionManager.getUsersDataFromSession().getUserId(),intent.getIntExtra("eventId",0));
+            }
+        });
     }
 
     /*
