@@ -25,14 +25,23 @@
             android:layout_height="wrap_content"
             android:text="Sample Event"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="26sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/eventDatePlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:text="MM/DD/YYYY│Sample City"
+            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/eventDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Sample event description" />
+            android:text="Sample event description"
+            android:textSize="13sp"
+            android:textColor="@color/colorSubtext"/>
     </LinearLayout>
 </LinearLayout>

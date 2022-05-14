@@ -17,9 +17,10 @@ public class Event {
         this.imageId = imageId;
     }
 
-    public Event(String eventName, String eventAddress, String eventDetails, int orgId, int imageId){
+    public Event(String eventName, String eventDate, String eventAddress, String eventDetails, int orgId, int imageId){
         this.eventName = eventName;
         this.eventAddress = eventAddress;
+        this.eventDate = eventDate;
         this.eventDetails = eventDetails;
         this.orgId = orgId;
         this.imageId = imageId;

@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.upvoluntaryo.objects.Event;
 import com.example.upvoluntaryo.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class EventSearchListAdapter extends RecyclerView.Adapter<EventSearchListAdapter.EventViewHolder> implements Filterable {
@@ -36,12 +38,14 @@ public class EventSearchListAdapter extends RecyclerView.Adapter<EventSearchList
 
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView eventName;
+        private TextView eventDatePlace;
         private TextView     eventDetails;
         OnEventListener onEventListener;
 
         public EventViewHolder(final View view, OnEventListener onEventListener){
             super(view);
             eventName = view.findViewById(R.id.eventName);
+            eventDatePlace = view.findViewById(R.id.eventDatePlace);
             eventDetails = view.findViewById(R.id.eventDetails);
             this.onEventListener = onEventListener;
 
@@ -64,10 +68,11 @@ public class EventSearchListAdapter extends RecyclerView.Adapter<EventSearchList
     @Override
     public void onBindViewHolder(@NonNull EventSearchListAdapter.EventViewHolder holder, int position) {
         String eventName = eventSearchList.get(position).getEventName();
+        String eventDatePlace = eventSearchList.get(position).getEventDate()+"│"+eventSearchList.get(position).getEventAddress();
         String eventDetails = eventSearchList.get(position).getEventDetails();
         holder.eventName.setText(eventName);
-
-        int maxLength = 100;
+        holder.eventDatePlace.setText(eventDatePlace);
+        int maxLength = 80;
         if (eventDetails.length() > maxLength)
             holder.eventDetails.setText(eventDetails.substring(0,maxLength)+"...");
         else

@@ -86,30 +86,35 @@ public class SearchActivity extends AppCompatActivity {
                 switch (r.nextInt(5)){
                     case 0:
                         DB.addEvent(new Event("Red Check Blood Drive",
+                                "Dec 25, 2020",
                                 "middle of nowhere",
                                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ac faucibus nibh. In placerat auctor velit, non mollis diam ultrices in. Pellentesque elementum, quam in pharetra tincidunt, risus odio ultricies massa, porttitor pharetra nisl turpis ut sem. Nullam pretium facilisis nunc, quis luctus nibh vestibulum vel. Vivamus condimentum, nunc vitae scelerisque rutrum, felis sapien hendrerit orci, sollicitudin sagittis massa tellus in tortor. Vivamus et auctor dolor. Nam turpis quam, congue sit amet semper at, mollis sit amet felis. Vivamus nec varius leo. Nam quis nibh a felis pharetra luctus vel in quam. Nulla a volutpat odio, vitae vestibulum neque.",
                                 0,0));
                         break;
                     case 1:
                         DB.addEvent(new Event("Blue Check Blood Drive",
-                                "middle of nowhere",
+                                "Dec 20, 2020",
+                                "Makati City",
                                 "sample event details2",
                                 0,0));
                         break;
                     case 2:
                         DB.addEvent(new Event("Green Check Blood Drive",
+                                "Dec 25, 2020",
                                 "middle of nowhere",
                                 "sample event details2",
                                 0,0));
                         break;
                     case 3:
                         DB.addEvent(new Event("Yellow Check Blood Drive",
+                                "Dec 25, 2020",
                                 "middle of nowhere",
                                 "sample event details2",
                                 0,0));
                         break;
                     case 4:
                         DB.addEvent(new Event("Orange Check Blood Drive",
+                                "Jan 25, 2020",
                                 "middle of nowhere",
                                 "sample event details2",
                                 0,0));
