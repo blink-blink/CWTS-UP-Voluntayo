@@ -202,4 +202,16 @@ public class DBHelper extends SQLiteOpenHelper {
     public Boolean updateOrg(Orgs org){
         return false;
     }
+
+    public Boolean followEvent(int userID, int eventID){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("event_id", eventID);
+        contentValues.put("user_id", userID);
+
+        long result = MyDB.insert(TABLE_FOLLOWING, null, contentValues);
+        if (result == -1) return false;
+        else return true;
+    }
 }
