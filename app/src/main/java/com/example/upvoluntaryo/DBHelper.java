@@ -40,15 +40,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 "org_name TEXT UNIQUE NOT NULL, " +
                 "org_details TEXT)");
         MyDB.execSQL("create Table " + TABLE_MEMBERSHIP +
-                "(membership_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "org_id INTEGER NOT NULL, " +
+                "(org_id INTEGER NOT NULL, " +
                 "user_id INTEGER NOT NULL," +
+                "CONSTRAINT pkMembership PRIMARY KEY (org_id, user_id)," +
                 "FOREIGN KEY (org_id) REFERENCES " + TABLE_ORGS + " (org_id)," +
                 "FOREIGN KEY (user_id) REFERENCES " + TABLE_USERS + " (user_id))");
         MyDB.execSQL("create Table " + TABLE_FOLLOWING +
-                "(following_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "event_id INTEGER NOT NULL, " +
+                "(event_id INTEGER NOT NULL, " +
                 "user_id INTEGER NOT NULL," +
+                "CONSTRAINT pkFollowing PRIMARY KEY (event_id, user_id)," +
                 "FOREIGN KEY (event_id) REFERENCES " + TABLE_EVENTS + " (event_id)," +
                 "FOREIGN KEY (user_id) REFERENCES " + TABLE_USERS + " (user_id))");
         MyDB.execSQL("create Table " + TABLE_EVENTS +
@@ -73,14 +73,16 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(MyDB);
     }
 
-    public Boolean insertUserData(String username, String password){ // Get other details (full_name, pronoun, birthday)
+    public Boolean insertUserData(String fullName, String username, String password, int pronoun, String birthday){
         SQLiteDatabase MyDB = this.getWritableDatabase();
         Cursor cursor = MyDB.rawQuery("Select count(*) from " + TABLE_USERS, null);
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put("full_name", fullName);
         contentValues.put("username", username);
         contentValues.put("password", password);
-        // Get other details (full_name, pronoun, birthday)
+        contentValues.put("pronoun", pronoun);
+        contentValues.put("birthday", birthday);
         if (cursor.getCount() <= 0) contentValues.put("user_id", 0);
 
         long result = MyDB.insert(TABLE_USERS, null, contentValues);
@@ -173,39 +175,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (org_id) REFERENCES " + TABLE_ORGS + " (org_id))");
     }
 
-    public ArrayList<Orgs> listOrgs(){
-        SQLiteDatabase MyDB = this.getReadableDatabase();
-        ArrayList<Orgs> orgList = new ArrayList<>();
-        Cursor cursor = MyDB.rawQuery("select * from " + TABLE_ORGS, null);
-        if (cursor.moveToFirst()){
-            do {
-                int orgID = Integer.parseInt(cursor.getString(0));
-                String orgName = cursor.getString(1);
-                String orgDetails = cursor.getString(2);
-                orgList.add(new Orgs(orgID,orgName,orgDetails));
-            }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
-        return orgList;
-    }
-
-    public Boolean addOrg(Orgs org){
-        SQLiteDatabase MyDB = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("org_name", org.getOrgName());
-        contentValues.put("org_details", org.getOrgDetails());
-
-        long result = MyDB.insert(TABLE_ORGS, null, contentValues);
-        if (result == -1) return false;
-        else return true;
-    }
-
-    public Boolean updateOrg(Orgs org){
-        return false;
-    }
-
     public Boolean followEvent(int userID, int eventID){
         SQLiteDatabase MyDB = this.getWritableDatabase();
 
@@ -240,4 +209,58 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return eventList;
     }
+
+    public Boolean unfollowEvent(int userID, int eventID){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        long result = MyDB.delete(TABLE_FOLLOWING, "event_id = ? and user_id = ?", new int[] {eventID,userID});
+
+        if (result == 1) return true;
+        else return false;
+    }
+
+    public ArrayList<Orgs> listOrgs(){
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        ArrayList<Orgs> orgList = new ArrayList<>();
+        Cursor cursor = MyDB.rawQuery("select * from " + TABLE_ORGS, null);
+        if (cursor.moveToFirst()){
+            do {
+                int orgID = Integer.parseInt(cursor.getString(0));
+                String orgName = cursor.getString(1);
+                String orgDetails = cursor.getString(2);
+                orgList.add(new Orgs(orgID,orgName,orgDetails));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return orgList;
+    }
+
+    public Boolean addOrg(Orgs org){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("org_name", org.getOrgName());
+        contentValues.put("org_details", org.getOrgDetails());
+
+        long result = MyDB.insert(TABLE_ORGS, null, contentValues);
+        if (result == -1) return false;
+        else return true;
+    }
+
+    public Boolean updateOrg(Orgs org){
+        return false;
+    }
+
+    public Boolean joinOrg(int userID, int orgID){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("org_id", orgID);
+        contentValues.put("user_id", userID);
+
+        long result = MyDB.insert(TABLE_MEMBERSHIP, null, contentValues);
+        if (result == -1) return false;
+        else return true;
+    }
+
 }
