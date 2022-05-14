@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.upvoluntaryo.DBHelper;
 import com.example.upvoluntaryo.R;
 import com.example.upvoluntaryo.RegisterActivity;
 import com.example.upvoluntaryo.SessionManager;
@@ -23,11 +24,20 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
+        DBHelper DB = new DBHelper(getContext());
+        SessionManager sessionManager = new SessionManager(getContext());
+
         ProfileViewModel profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        TextView userProfileName = (TextView) root.findViewById(R.id.userProfileName);
+        userProfileName.setText(sessionManager.getUsersDataFromSession().getFullName());
+        //userProfileName.setText(DB.getUserData(sessionManager.getUsersDataFromSession().getUsername(),1));
+
 
         Button logoutButton = (Button) root.findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {

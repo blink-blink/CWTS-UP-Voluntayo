@@ -88,6 +88,13 @@ public class DBHelper extends SQLiteOpenHelper {
         else return true;
     }
 
+    public String getUserData(String username, int columnNumber){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery("Select * from " + TABLE_USERS + " where username = ?", new String[] {username});
+        cursor.moveToFirst();
+        return cursor.getString(columnNumber);
+    }
+
     public Boolean checkUsername(String username) {
         SQLiteDatabase MyDB = this.getWritableDatabase();
         Cursor cursor = MyDB.rawQuery("Select * from " + TABLE_USERS + " where username = ?", new String[] {username});

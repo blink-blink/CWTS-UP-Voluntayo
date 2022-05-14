@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
     TextView register;
-    EditText username, password, rePassword;
+    EditText username, password, rePassword, fullName, birthday;
+    boolean pronounChecked;
+    int pronoun;
     Button btnRegister,btnExistingUser;
     DBHelper DB;
     
@@ -26,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.usernameR);
         password = (EditText) findViewById(R.id.passwordR);
         rePassword = (EditText) findViewById(R.id.retypePasswordR);
+        fullName = (EditText) findViewById(R.id.fullnameR);
+        birthday = (EditText) findViewById(R.id.birthdayR);
         btnRegister = (Button) findViewById(R.id.registerButton);
         btnExistingUser = (Button) findViewById(R.id.existingUserButton);
 
@@ -39,13 +44,25 @@ public class RegisterActivity extends AppCompatActivity {
                 String user = username.getText().toString();
                 String pw = password.getText().toString();
                 String rPW = rePassword.getText().toString();
+                String fN = fullName.getText().toString();
+                String bday = birthday.getText().toString();
 
-                if (user.equals("") || pw.equals("") || rPW.equals(""))
+                if (user.equals("") || pw.equals("") || rPW.equals("") || fN.equals("") || bday.equals("") || !pronounChecked)
                     Toast.makeText(RegisterActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 else
                 if  (pw.equals(rPW)){
                     if (DB.checkUsername(user) == false){
                         if (DB.insertUserData(user, pw)){
+
+                            SessionManager sessionManager = new SessionManager(view.getContext());
+                            sessionManager.createLoginSession(Integer.parseInt(DB.getUserData(user,0)),
+                                    fN,
+                                    user,
+                                    pw,
+                                    pronoun,
+                                    bday,
+                                    "");
+
                             Toast.makeText(RegisterActivity.this, "Registered Succesfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(intent);
@@ -74,4 +91,25 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
     }
+
+    public void onPronounClicked(View view){
+        pronounChecked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.maleRadioR:
+                if (pronounChecked)
+                    pronoun = 0;
+                break;
+            case R.id.femaleRadioR:
+                if (pronounChecked)
+                    pronoun = 1;
+                break;
+            case R.id.othersRadioR:
+                if (pronounChecked)
+                    pronoun = 2;
+                break;
+        }
+    }
 }
+
