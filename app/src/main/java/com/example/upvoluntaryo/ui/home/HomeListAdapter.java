@@ -3,6 +3,8 @@ package com.example.upvoluntaryo.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,6 +60,9 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.HomeLi
     public void onBindViewHolder(@NonNull HomeListViewHolder holder, int position) {
         String eventName = eventList.get(position).getEventName();
         holder.eventName.setText(eventName);
+
+        //Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.scale_down);
+        //holder.itemView.startAnimation(animation);
     }
 
     @Override

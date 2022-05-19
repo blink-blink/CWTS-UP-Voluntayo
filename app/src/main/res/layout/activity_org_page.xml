@@ -28,44 +28,57 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id = "@+id/userProfileName"
+            android:id = "@+id/op_orgName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:layout_marginHorizontal="30dp"
-            android:text="Sample Person"
+            android:text="Sample Org"
             android:textSize="20dp"
             android:textStyle="bold"
+            android:textAlignment="center"
 
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
-            android:id="@+id/userdetails1"
+            android:id="@+id/op_orgdetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
             android:text="lorem ipsum"
+            android:textAlignment="center"
 
-            app:layout_constraintTop_toBottomOf="@id/userProfileName"/>
+            app:layout_constraintTop_toBottomOf="@id/op_orgName"/>
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/profile_tabs"
+            android:id="@+id/org_page_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMaxWidth="0dp"
             app:tabGravity="fill"
             app:tabMode="fixed"
 
-            app:layout_constraintTop_toBottomOf="@id/userdetails1" />
+            app:layout_constraintTop_toBottomOf="@id/op_orgdetails">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="about"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="members"/>
+        </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/profile_view_pager"
+            android:id="@+id/org_page_view_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-            app:layout_constraintTop_toBottomOf="@id/profile_tabs"
+            app:layout_constraintTop_toBottomOf="@id/org_page_tabs"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -76,21 +89,22 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginTop="-50dp"
-        android:layout_marginStart="30dp"
         android:src="@drawable/sampleprofilepic"
         app:civ_border_width="2dp"
         app:civ_border_color="#FF000000"
 
         app:layout_constraintTop_toTopOf="@+id/profilelayout1"
         app:layout_constraintStart_toStartOf="@+id/profilelayout1"
+        app:layout_constraintEnd_toEndOf="@id/profilelayout1"
         />
 
     <Button
-        android:id="@+id/logoutButton"
+        android:id="@+id/joinButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:text="Logout"
+        android:text="Join"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

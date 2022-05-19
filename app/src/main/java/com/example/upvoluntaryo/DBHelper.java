@@ -73,13 +73,16 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(MyDB);
     }
 
-    public Boolean insertUserData(String username, String password){ // Get other details (full_name, pronoun, birthday)
+    public Boolean insertUserData(String fullName, String username, String password, int pronoun, String birthday){ // Get other details (full_name, pronoun, birthday)
         SQLiteDatabase MyDB = this.getWritableDatabase();
         Cursor cursor = MyDB.rawQuery("Select count(*) from " + TABLE_USERS, null);
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put("full_name", fullName);
         contentValues.put("username", username);
         contentValues.put("password", password);
+        contentValues.put("pronoun", pronoun);
+        contentValues.put("birthday", birthday);
         // Get other details (full_name, pronoun, birthday)
         if (cursor.getCount() <= 0) contentValues.put("user_id", 0);
 
@@ -197,6 +200,51 @@ public class DBHelper extends SQLiteOpenHelper {
         return orgList;
     }
 
+    public ArrayList<Orgs> listUserOrgs(int userId){
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        ArrayList<Orgs> orgList = new ArrayList<>();
+        Cursor cursor = MyDB.rawQuery("select * from " + TABLE_ORGS + " left join "+ TABLE_MEMBERSHIP +
+                " on " + TABLE_ORGS + ".org_id = " + TABLE_MEMBERSHIP + ".org_id where " +
+                TABLE_MEMBERSHIP + ".user_id = ?", new String[] {Integer.toString(userId)});
+        if (cursor.moveToFirst()){
+            do {
+                int orgID = Integer.parseInt(cursor.getString(0));
+                String orgName = cursor.getString(1);
+                String orgDetails = cursor.getString(2);
+                orgList.add(new Orgs(orgID,orgName,orgDetails));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return orgList;
+    }
+
+    public ArrayList<Users> listOrgMembers(int orgId){
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        ArrayList<Users> memberList = new ArrayList<>();
+        Cursor cursor = MyDB.rawQuery("select * from " + TABLE_USERS+ " left join "+ TABLE_MEMBERSHIP +
+                " on " + TABLE_USERS + ".user_id = " + TABLE_MEMBERSHIP + ".user_id where " +
+                TABLE_MEMBERSHIP + ".org_id = ?", new String[] {Integer.toString(orgId)});
+
+        if (cursor.moveToFirst()){
+            do {
+
+                int userId = Integer.parseInt(cursor.getString(0));
+                String fn = cursor.getString(1);
+                String username = cursor.getString(2);
+                String pw = cursor.getString(3);
+                int pn = Integer.parseInt(cursor.getString(4));
+                String bday = cursor.getString(5);
+                String about = cursor.getString(6);
+
+                memberList.add(new Users(userId,fn,username,pw,pn,bday,about));
+            }
+            while (cursor.moveToNext());
+        }
+        cursor.close();
+        return memberList;
+    }
+
     public Boolean addOrg(Orgs org){
         SQLiteDatabase MyDB = this.getWritableDatabase();
 
@@ -211,6 +259,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Boolean updateOrg(Orgs org){
         return false;
+    }
+
+    public String getOrgData(int orgId, int columnNumber){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+        Cursor cursor = MyDB.rawQuery("Select * from " + TABLE_ORGS + " where org_id = ?", new String[] {Integer.toString(orgId)});
+        cursor.moveToFirst();
+        return cursor.getString(columnNumber);
     }
 
     public Boolean followEvent(int userID, int eventID){

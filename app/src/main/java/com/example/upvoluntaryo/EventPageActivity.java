@@ -23,14 +23,15 @@ import android.widget.ImageView;
 import com.example.upvoluntaryo.eventpage.EventPageAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.jgabrielfreitas.core.BlurImageView;
 
 import jp.wasabeef.blurry.Blurry;
 
 public class EventPageActivity extends AppCompatActivity {
-    BitmapDrawable bitmapDrawable;
+    //BitmapDrawable bitmapDrawable;
     DBHelper DB;
 
-    @StringRes
+    //@StringRes
     private static final String[] EVENT_PAGE_TAB_TITLES = new String[]{"Description", "Rules", "Project POC", "About Org"};
 
     @Override
@@ -46,10 +47,8 @@ public class EventPageActivity extends AppCompatActivity {
         getWindow().setEnterTransition(slide);
         getWindow().setExitTransition(slide);
 
-        //Add Blur takes too much resource
-        /*
-        blurImage()
-        */
+        //Add Blur
+        blurImage();
 
         Intent intent = getIntent();
         EventPageAdapter eventPageAdapter = new EventPageAdapter(this,
@@ -76,9 +75,8 @@ public class EventPageActivity extends AppCompatActivity {
         });
     }
 
-    /*
     private void blurImage(){
-        ImageView imageView = (ImageView) findViewById(R.id.eventPageImage);
+        BlurImageView blurImageView = (BlurImageView) findViewById(R.id.eventPageImage);
 
         MotionLayout.TransitionListener transitionListener = new MotionLayout.TransitionListener() {
             @Override
@@ -88,20 +86,13 @@ public class EventPageActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.S)
             @Override
             public void onTransitionChange(MotionLayout motionLayout, int startId, int endId, float progress) {
-
-                Bitmap bitmap = Blurry.with(EventPageActivity.this)
-                        .radius(1)
-                        .sampling(1)
-                        .capture(findViewById(R.id.eventPageImage)).get();
-                if (bitmapDrawable == null)
-                    bitmapDrawable = new BitmapDrawable(getResources(),bitmap);
-                else
-                    bitmapDrawable.setBitmap(bitmap);
-                imageView.setImageDrawable(bitmapDrawable);
+                blurImageView.setBlur((int) (progress*10));
             }
 
             @Override
             public void onTransitionCompleted(MotionLayout motionLayout, int currentId) {
+                if (currentId == R.id.start)
+                    blurImageView.setBlur(0);
             }
 
             @Override
@@ -111,5 +102,4 @@ public class EventPageActivity extends AppCompatActivity {
         MotionLayout motionLayout = (MotionLayout) findViewById(R.id.eventPageMotionLayout);
         motionLayout.addTransitionListener(transitionListener);
     }
-     */
 }

@@ -9,7 +9,7 @@
     app:layoutDescription="@xml/activity_event_page_scene"
     tools:context=".EventPageActivity">
 
-    <ImageView
+    <com.jgabrielfreitas.core.BlurImageView
         android:id="@+id/eventPageImage"
         android:layout_width="match_parent"
         android:layout_height="300dp"

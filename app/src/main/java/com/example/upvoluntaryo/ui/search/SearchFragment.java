@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.upvoluntaryo.DBHelper;
+import com.example.upvoluntaryo.OrgPageActivity;
 import com.example.upvoluntaryo.objects.Event;
 import com.example.upvoluntaryo.EventPageActivity;
 import com.example.upvoluntaryo.objects.Orgs;
@@ -24,7 +25,7 @@ import com.example.upvoluntaryo.R;
 
 import java.util.ArrayList;
 
-public class SearchFragment extends Fragment implements EventSearchListAdapter.OnEventListener {
+public class SearchFragment extends Fragment implements EventSearchListAdapter.OnEventListener, OrgSearchListAdapter.OnOrgListener {
     public static final String ARG_OBJECT = "object";
 
     // vars
@@ -66,6 +67,8 @@ public class SearchFragment extends Fragment implements EventSearchListAdapter.O
                 @Override
                 public void onChanged(ArrayList<Event> eventArrayList) {
                     eventSearchListAdapter.updateEventList(DB.listEvents());
+                    if (searchViewModel.getQuery().getValue() != null)
+                        if (eventSearchListAdapter != null) eventSearchListAdapter.getFilter().filter(searchViewModel.getQuery().getValue());
                 }
             });
 
@@ -78,7 +81,7 @@ public class SearchFragment extends Fragment implements EventSearchListAdapter.O
 
             orgList = DB.listOrgs();
 
-            orgSearchListAdapter = new OrgSearchListAdapter(orgList);
+            orgSearchListAdapter = new OrgSearchListAdapter(orgList, this);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -89,6 +92,8 @@ public class SearchFragment extends Fragment implements EventSearchListAdapter.O
                 @Override
                 public void onChanged(ArrayList<Orgs> orgsArrayList) {
                     orgSearchListAdapter.updateOrgList(DB.listOrgs());
+                    if (searchViewModel.getQuery().getValue() != null)
+                        if (orgSearchListAdapter != null) orgSearchListAdapter.getFilter().filter(searchViewModel.getQuery().getValue());
                 }
             });
         }
@@ -111,6 +116,13 @@ public class SearchFragment extends Fragment implements EventSearchListAdapter.O
         intent.putExtra("eventId", eventList.get(position).getEventId());
         intent.putExtra("eventPageName", eventList.get(position).getEventName());
         intent.putExtra("eventPageDetails", eventList.get(position).getEventDetails());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onOrgClick(int position) {
+        Intent intent = new Intent(getContext(), OrgPageActivity.class);
+        intent.putExtra("orgId", orgList.get(position).getOrgId());
         startActivity(intent);
     }
 }

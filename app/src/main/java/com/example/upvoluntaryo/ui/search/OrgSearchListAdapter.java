@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.upvoluntaryo.objects.Event;
 import com.example.upvoluntaryo.objects.Orgs;
 import com.example.upvoluntaryo.R;
 
@@ -19,9 +18,11 @@ import java.util.ArrayList;
 public class OrgSearchListAdapter extends RecyclerView.Adapter<OrgSearchListAdapter.OrgViewHolder> implements Filterable {
     private ArrayList<Orgs> orgSearchList;
     private ArrayList<Orgs> orgSearchListFull;
+    private OnOrgListener onOrgListener;
 
-    public OrgSearchListAdapter(ArrayList<Orgs> orgSearchList) {
+    public OrgSearchListAdapter(ArrayList<Orgs> orgSearchList, OnOrgListener onOrgListener) {
         this.orgSearchList = orgSearchList;
+        this.onOrgListener = onOrgListener;
         orgSearchListFull = new ArrayList<>(orgSearchList);
     }
 
@@ -33,22 +34,30 @@ public class OrgSearchListAdapter extends RecyclerView.Adapter<OrgSearchListAdap
         notifyDataSetChanged();
     }
 
-    public class OrgViewHolder extends RecyclerView.ViewHolder{
+    public class OrgViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView orgName;
         private TextView orgDetails;
+        OnOrgListener onOrgListener;
 
-        public OrgViewHolder(final View view) {
+        public OrgViewHolder(final View view, OnOrgListener onOrgListener) {
             super(view);
             this.orgName = view.findViewById(R.id.orgName);
             this.orgDetails = view.findViewById(R.id.orgDetails);
+            this.onOrgListener = onOrgListener;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            onOrgListener.onOrgClick(getAdapterPosition());
         }
     }
 
     @NonNull
     @Override
     public OrgSearchListAdapter.OrgViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.org_item, parent, false);
-        return new OrgViewHolder(itemView);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.org_search_item, parent, false);
+        return new OrgViewHolder(itemView, onOrgListener);
     }
 
     @Override
@@ -62,6 +71,10 @@ public class OrgSearchListAdapter extends RecyclerView.Adapter<OrgSearchListAdap
     @Override
     public int getItemCount() {
         return orgSearchList.size();
+    }
+
+    public interface OnOrgListener {
+        void onOrgClick(int position);
     }
 
     @Override

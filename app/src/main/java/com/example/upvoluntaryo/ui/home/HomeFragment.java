@@ -80,6 +80,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener,HomeL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        SessionManager sessionManager = new SessionManager(getActivity());
+        eventList = DB.listFollowedEvents(sessionManager.getUsersDataFromSession().getUserId());
+        homeListAdapter.updateHomeList(eventList);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;

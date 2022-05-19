@@ -101,7 +101,9 @@ public class EventSearchListAdapter extends RecyclerView.Adapter<EventSearchList
 
                 for (Event event : eventSearchListFull){
                     if (event.getEventName().toLowerCase().contains(filterPattern) ||
-                            event.getEventDetails().toLowerCase().contains(filterPattern)){
+                            event.getEventDetails().toLowerCase().contains(filterPattern) ||
+                            event.getEventAddress().toLowerCase().contains(filterPattern) ||
+                            event.getEventDate().toLowerCase().contains(filterPattern)){
                         filteredList.add(event);
                     }
                 }

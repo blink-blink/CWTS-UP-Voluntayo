@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
                 else
                 if  (pw.equals(rPW)){
                     if (DB.checkUsername(user) == false){
-                        if (DB.insertUserData(user, pw)){
+                        if (DB.insertUserData(fN, user, pw, pronoun, bday)){
 
                             SessionManager sessionManager = new SessionManager(view.getContext());
                             sessionManager.createLoginSession(Integer.parseInt(DB.getUserData(user,0)),
@@ -66,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, "Registered Succesfully", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                         else {
                             Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();

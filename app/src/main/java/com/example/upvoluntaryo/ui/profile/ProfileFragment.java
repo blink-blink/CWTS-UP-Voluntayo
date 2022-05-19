@@ -11,14 +11,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.upvoluntaryo.DBHelper;
 import com.example.upvoluntaryo.R;
 import com.example.upvoluntaryo.RegisterActivity;
 import com.example.upvoluntaryo.SessionManager;
 import com.example.upvoluntaryo.databinding.FragmentProfileBinding;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class ProfileFragment extends Fragment {
+
+    private static final String[] PROFILE_PAGE_TAB_TITLES = new String[]{"About", "Orgs"};
 
     private FragmentProfileBinding binding;
 
@@ -35,8 +40,16 @@ public class ProfileFragment extends Fragment {
         View root = binding.getRoot();
 
         TextView userProfileName = (TextView) root.findViewById(R.id.userProfileName);
-        userProfileName.setText(sessionManager.getUsersDataFromSession().getFullName());
-        //userProfileName.setText(DB.getUserData(sessionManager.getUsersDataFromSession().getUsername(),1));
+        userProfileName.setText(DB.getUserData(sessionManager.getUsersDataFromSession().getUsername(),1));
+
+        ProfileTabAdapter profileTabAdapter = new ProfileTabAdapter(this);
+        ViewPager2 viewPager = root.findViewById(R.id.profile_view_pager);
+        viewPager.setAdapter(profileTabAdapter);
+
+        TabLayout tabLayout = root.findViewById(R.id.profile_tabs);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(PROFILE_PAGE_TAB_TITLES[position])
+        ).attach();
 
 
         Button logoutButton = (Button) root.findViewById(R.id.logoutButton);
