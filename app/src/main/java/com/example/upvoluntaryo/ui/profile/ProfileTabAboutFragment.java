@@ -12,18 +12,18 @@ import androidx.fragment.app.Fragment;
 
 import com.example.upvoluntaryo.R;
 
-public class ProfileTabFragment extends Fragment {
+public class ProfileTabAboutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profileviewpager, container, false);
+        return inflater.inflate(R.layout.fragment_profileabout, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView textView = (TextView) view.findViewById(R.id.profiledetails);
+        TextView textView = (TextView) view.findViewById(R.id.profileTextDetails);
         textView.setText("Profile Details");
     }
 }

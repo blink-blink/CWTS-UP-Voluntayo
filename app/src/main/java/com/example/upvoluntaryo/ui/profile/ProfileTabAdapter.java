@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.upvoluntaryo.ui.search.SearchFragment;
-
 public class ProfileTabAdapter extends FragmentStateAdapter {
     public ProfileTabAdapter(@NonNull Fragment fragment) {
         super(fragment);
@@ -14,8 +12,8 @@ public class ProfileTabAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Fragment fragment = new ProfileTabFragment();
-        return fragment;
+        if (position == 0) return new ProfileTabAboutFragment();
+        return new ProfileTabOrgsFragment();
     }
 
     @Override

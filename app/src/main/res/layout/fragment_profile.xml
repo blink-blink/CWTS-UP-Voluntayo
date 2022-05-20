@@ -88,9 +88,11 @@
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_margin="20dp"
+        android:background="@drawable/roundcornerbuttons"
         android:text="Logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profilelayout1" />
 </androidx.constraintlayout.widget.ConstraintLayout>

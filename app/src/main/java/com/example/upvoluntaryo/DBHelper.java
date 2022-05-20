@@ -245,6 +245,39 @@ public class DBHelper extends SQLiteOpenHelper {
         return memberList;
     }
 
+    public ArrayList<Event> listOrgEvents(int orgId){
+        SQLiteDatabase MyDB = this.getReadableDatabase();
+        ArrayList<Event> eventList = new ArrayList<>();
+        Cursor cursor = MyDB.rawQuery("select * from " + TABLE_EVENTS+ " where org_id = ?", new String[] {Integer.toString(orgId)});
+        if (cursor.moveToFirst()){
+            do {
+                int eventID = Integer.parseInt(cursor.getString(0));
+                int eventType = Integer.parseInt(cursor.getString(1));
+                String eventName = cursor.getString(2);
+                String eventAddress = cursor.getString(3);
+                String eventDetails = cursor.getString(4);
+                String eventDate = cursor.getString(5);
+                int target = Integer.parseInt(cursor.getString(6));
+                int orgID = Integer.parseInt(cursor.getString(7));
+                eventList.add(new Event(eventID, eventType, eventName, eventAddress, eventDetails, eventDate, orgID,0,0));
+            }
+            while (cursor.moveToNext());
+        }
+        return eventList;
+    }
+
+    public Boolean addMembers(int userId, int orgId){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("user_id", userId);
+        contentValues.put("org_id", orgId);
+
+        long result = MyDB.insert(TABLE_MEMBERSHIP, null, contentValues);
+        if (result == -1) return false;
+        else return true;
+    }
+
     public Boolean addOrg(Orgs org){
         SQLiteDatabase MyDB = this.getWritableDatabase();
 
@@ -255,6 +288,24 @@ public class DBHelper extends SQLiteOpenHelper {
         long result = MyDB.insert(TABLE_ORGS, null, contentValues);
         if (result == -1) return false;
         else return true;
+    }
+
+    public Boolean createOrg(int userId, Orgs org){
+        SQLiteDatabase MyDB = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("org_name", org.getOrgName());
+        contentValues.put("org_details", org.getOrgDetails());
+
+        long result = MyDB.insert(TABLE_ORGS, null, contentValues);
+        if (result == -1) return false;
+        else{
+            Cursor cursor = MyDB.rawQuery("Select * from " + TABLE_ORGS + " where rowid = ?",  new String[] {Long.toString(result)});
+            if (cursor.moveToFirst()){
+                addMembers(userId, Integer.parseInt(cursor.getString(0)));
+            }
+            return true;
+        }
     }
 
     public Boolean updateOrg(Orgs org){

@@ -12,7 +12,7 @@
         android:layout_height="200dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/hidethepainharold_sampleimage"
+        android:src="@drawable/sampleorgheader"
 
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -89,7 +89,7 @@
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:layout_marginTop="-50dp"
-        android:src="@drawable/sampleprofilepic"
+        android:src="@drawable/sampleorgpic"
         app:civ_border_width="2dp"
         app:civ_border_color="#FF000000"
 
@@ -104,7 +104,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:text="Join"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/profilelayout1"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
